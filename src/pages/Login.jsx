@@ -1,82 +1,67 @@
-import { useState } from "react";
+// src/pages/Login.jsx
+import { useContext, useState } from "react";
+import { UserContext } from "../context/UserProvider";
 import Swal from "sweetalert2";
 
-
 export const Login = () => {
+  const { login } = useContext(UserContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validaciones
-    if (!email || !password) {
-      return Swal.fire({
-        icon: "error",
-        title: "Campos incompletos",
-        text: "Debes ingresar tu correo y contraseña",
-      });
+    if (password.length < 6) {
+      Swal.fire("Error", "La contraseña debe tener al menos 6 caracteres", "error");
+      return;
     }
 
-  // Validación avanzada de la contraseña
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{6,10}$/;
+    const { ok, error } = await login({ email, password });
 
-    if (!passwordRegex.test(password)) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Contraseña inválida",
-        text: "La contraseña debe tener al entre 6 y 10 caracteres, una letra mayúscula, un número, y un caracter especial",
-      });
+    if (ok) {
+      Swal.fire("Éxito", "Inicio de sesión exitoso", "success");
+    } else {
+      Swal.fire("Error", error, "error");
     }
-
-    Swal.fire({
-      icon: "success",
-      title: "Inicio de sesión exitoso",
-      text: "Bienvenido a la Pizzeria MamaMia",
-      confirmButtonColor: '#39ff14', 
-      background: '#4169E1',         
-      color: '#39ff14'   
-
-    });
-
-    // Limpiar campos
-    setEmail("");
-    setPassword("");
   };
 
   return (
-    <div className="form-container-login container py-5">  {/* form-container-login container clase para estilos propoios considerar para Register*/}
+
+    <div className="container mt-5 form-container-login">
      
-      <form onSubmit={handleSubmit} className="mx-auto form-body-login">     {/* form-body-login modifica estilos particulares considerar para Register*/}
-         <h2 className="text-center mb-5">Ingresa tus datos para Iniciar Sesión</h2>
-        <div className="mb-3">
-           <i className="fas fa-pizza-slice me-2"></i>
-          <label>Email</label>
+
+      <form onSubmit={handleSubmit} className="form-body-login">
+         <h2 className="form-body-login h2">Iniciar sesión</h2>
+        <div className="mb-4">
+          <i className="fas fa-pizza-slice me-2"></i>
+          <label className="form-label">Correo</label>
           <input
             type="email"
-            placeholder="Ingresa tu mail"
             className="form-control"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
 
-        <div className="mb-5">
-           <i className="fas fa-pizza-slice me-2"></i>
-          <label>Contraseña</label>
+        <div className="mb-3">
+          <i className="fas fa-pizza-slice me-2"></i>
+          <label className="form-label">Contraseña</label>
           <input
             type="password"
-            placeholder="Ingresa contraseña"
             className="form-control"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
 
-        <button type="submit" className="btn  w-100 btn-hover btnLoginPro">
-          Iniciar sesión
+        <button type="submit" className="btn btnLoginPro">
+          Entrar
         </button>
       </form>
     </div>
+
   );
 };
