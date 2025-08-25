@@ -1,17 +1,40 @@
+import { useState } from "react";
+import axios from "axios";
 import { useCart } from "../context/CartProvider";
-// 🔹 Importamos el contexto de usuario
 import { useUser } from "../context/UserProvider";
 
 export const Cart = () => {
   const { cart, increaseCount, decreaseCount, total } = useCart();
-
-  // 🔹 Consumimos el token desde UserProvider
   const { token } = useUser();
+
+  const [successMessage, setSuccessMessage] = useState("");
 
   const formattedTotal = total.toLocaleString("es-CL", {
     style: "currency",
     currency: "CLP",
   });
+
+  const handleCheckout = async () => {
+    if (!token) return; // Evita ejecutar si no hay token
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5001/api/checkouts",
+        { items: cart },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        setSuccessMessage("Su pedido ha sido exitoso. ¡Gracias por su compra!");
+      }
+    } catch (error) {
+      console.error("Error al procesar el pago:", error);
+    }
+  };
 
   return (
     <div className="container py-4">
@@ -71,10 +94,17 @@ export const Cart = () => {
         </h4>
       </div>
 
-      {/* 🔹 Mostramos el botón solo si el token está en true */}
       {token && (
         <div className="text-center mt-3">
-          <button className="btn btn-lg button-pay">Pagar</button>
+          <button className="btn btn-lg button-pay" onClick={handleCheckout}>
+            Pagar
+          </button>
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="alert alert-success text-center mt-3">
+          {successMessage}
         </div>
       )}
     </div>
