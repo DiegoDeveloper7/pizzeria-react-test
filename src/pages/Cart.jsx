@@ -43,25 +43,35 @@ export const Cart = () => {
       {cart.map((pizza) => (
         <div
           key={pizza.id}
-          className="d-flex align-items-center justify-content-between border rounded p-3 mb-3 shadow-sm bodyCart"
+          className="row align-items-center border rounded p-3 mb-3 shadow-sm bodyCart"
         >
-          <img
-            src={pizza.img}
-            alt={pizza.name}
-            className="rounded"
-            style={{ width: "80px", height: "80px", objectFit: "cover" }}
-          />
+          {/* Imagen */}
+          <div className="col-auto">
+            <img
+              src={pizza.img}
+              alt={pizza.name}
+              className="rounded"
+              style={{ width: "80px", height: "80px", objectFit: "cover" }}
+            />
+          </div>
 
-          <h5 className="mb-0 text-capitalize">{pizza.name}</h5>
+          {/* Nombre */}
+          <div className="col">
+            <h5 className="mb-0 text-capitalize">{pizza.name}</h5>
+          </div>
 
-          <p className="mb-0 fw-bold">
-            {pizza.price.toLocaleString("es-CL", {
-              style: "currency",
-              currency: "CLP",
-            })}
-          </p>
+          {/* Precio */}
+          <div className="col-auto text-end">
+            <p className="mb-0 fw-bold">
+              {pizza.price.toLocaleString("es-CL", {
+                style: "currency",
+                currency: "CLP",
+              })}
+            </p>
+          </div>
 
-          <div className="d-flex align-items-center">
+          {/* Botones */}
+          <div className="col-auto d-flex align-items-center">
             <button
               className="btn btn-danger btn-sm me-2"
               onClick={() => decreaseCount(pizza.id)}

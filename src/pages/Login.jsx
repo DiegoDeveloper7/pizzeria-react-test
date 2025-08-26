@@ -57,9 +57,11 @@ export const Login = () => {
           />
         </div>
 
-        <button type="submit" className="btn btnLoginPro">
-          Entrar
-        </button>
+         <div className="d-flex justify-content-center">
+               <button type="submit" className="btn btnLoginPro">
+                  Entrar
+              </button>
+         </div>
       </form>
     </div>
 
