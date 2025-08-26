@@ -17,3 +17,5 @@ En consecuencia, para hacer la correción correspondiente desde un ordenador Win
 6to desafio. Creación de contexto: CartProvider.jsx para conectar el Home, Nav, Cart. ApiContext.jsx para conectar Home.jsx y Pizza.jsx. (HITO 6)
 
 7mo desafio. Creación de rutas protegidas, token, ProtecteRoute.jsx PublicRoute.jsx (HITO 7)
+
+8vo Prueba Final. Implementación JWT. (HITO 8)
